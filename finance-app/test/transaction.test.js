@@ -1,22 +1,11 @@
 const request = require('supertest');
 const app = require('../server');
-const expect = require('chai').expect;
+const { setupTestUser, testToken, testUserId, cleanupTestData } = require('./testSetup');
 const Transaction = require('../models/transaction');
-const jwt = require('jsonwebtoken');
-
-let testToken;
+const expect = require('chai').expect;
 
 before(async function() {
-    // Create a test user
-    const userData = { username: 'testuser', email: 'testuser@example.com', password: 'Password123' };
-
-    let user = await User.findOne({ email: userData.email });
-    if (!user) {
-        user = await new User(userData).save();
-    }
-
-    // Generate a test token
-    testToken = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    await setupTestUser();
 });
 
 describe('Transaction Tests', function() {
@@ -100,5 +89,5 @@ describe('Transaction Tests', function() {
 
 after(async function() {
     // clean up any test data created during tests
-    await Transaction.deleteMany({ user: testUserId });
+    await cleanupTestData();
 });
