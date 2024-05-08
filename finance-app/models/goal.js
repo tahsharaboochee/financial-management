@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const goalSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     targetAmount: { type: Number, required: true },

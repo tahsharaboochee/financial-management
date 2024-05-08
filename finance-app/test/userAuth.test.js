@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../server');
 const { setupTestUser, testToken } = require('./testSetup');
-const User = require('../models/User');
+const User = require('../models/user');
 const expect = require('chai').expect;
 
 before(async function() {
