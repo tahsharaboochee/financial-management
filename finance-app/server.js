@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const goalRoutes = require('./routes/goalRoutes');
+const insightsRoutes = require('./routes/insightsRoutes');
 const authMiddleware = require('./middleware/auth');
 
 const app = express();
@@ -22,6 +23,9 @@ app.use('/transactions', transactionRoutes);
 
 // Goal routes
 app.use('/goals', goalRoutes);
+
+// insights routes
+app.use('/insights', insightsRoutes);
 
 // Example test route to check authentication
 app.get('/test-auth', authMiddleware, (req, res) => {
