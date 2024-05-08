@@ -4,7 +4,17 @@ const transactionSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     type: { type: String, enum: ['income', 'expense', 'saving'], required: true },
     amount: { type: Number, required: true },
-    category: { type: String, required: true }, // Ensure that categories are predefined or validated
+    category: { 
+        type: String, 
+        required: true, 
+        validate: {
+            validator: function(value) {
+                const allowedCategories = ['income', 'expense', 'saving'];
+                return allowedCategories.includes(value);
+            },
+            message: 'Invalid category'
+        }
+    },
     description: { type: String }, // Optional field for more details about the transaction
     date: { type: Date, default: Date.now }, // Use for tracking when the transaction occurred
     tags: [{ type: String }], // Optional tags for additional categorization and search flexibility
