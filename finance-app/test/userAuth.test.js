@@ -1,11 +1,14 @@
 const request = require('supertest');
-const app = require('../server');
-const { setupTestUser, testToken } = require('./testSetup');
-const User = require('../models/user');
+const app = require('../server'); 
 const expect = require('chai').expect;
+const { setupTestUser, cleanupTestData } = require('./testSetup');
+
+let testToken;
 
 before(async function() {
-    await setupTestUser();
+    const setupResult = await setupTestUser();
+    testUserId = setupResult.testUserId;
+    testToken = setupResult.testToken;
 });
 
 describe('User Authentication Tests', function() {
@@ -29,6 +32,6 @@ describe('User Authentication Tests', function() {
 });
 
 after(async function() {
-    // clean up the test user
-    await User.deleteOne({ email: 'testuser@example.com' });
+    // clean up any test data created during tests
+    await cleanupTestData();
 });

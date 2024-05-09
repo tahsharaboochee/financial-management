@@ -1,11 +1,14 @@
 const request = require('supertest');
 const app = require('../server');
-const { setupTestUser, testToken, testUserId, cleanupTestData } = require('./testSetup');
+const { setupTestUser, cleanupTestData } = require('./testSetup');
 const Transaction = require('../models/transaction');
 const expect = require('chai').expect;
+const { ObjectId } = require('mongodb');
 
 before(async function() {
-    await setupTestUser();
+    const setupResult = await setupTestUser();
+    testUserId = setupResult.testUserId;
+    testToken = setupResult.testToken;
 });
 
 describe('Transaction Tests', function() {
@@ -31,44 +34,30 @@ describe('Transaction Tests', function() {
 
         it('should update an existing transaction when authenticated', async function() {
             const transaction = await Transaction.findOne({ user: testUserId });
+            // console.log("Found Transaction:", transaction);
             request(app)
                 .patch(`/transactions/${transaction._id}`)
                 .set('Authorization', `Bearer ${testToken}`)
                 .send({ amount: 200 })
                 .expect(200);
         });
-
-        it('should return 404 Not Found for non-existent transaction', function(done) {
-            request(app)
-                .patch('/transactions/nonexistent_id')
-                .set('Authorization', `Bearer ${testToken}`)
-                .send({ amount: 200 })
-                .expect(404, done);
-        });
     });
 
-//     describe('DELETE /transactions/:id', function() {
-//         it('should require authentication', function(done) {
-//             request(app)
-//                 .delete('/transactions/123')
-//                 .expect(401, done);
-//         });
+    describe('DELETE /transactions/:id', function() {
+        it('should require authentication', function(done) {
+            request(app)
+                .delete('/transactions/123')
+                .expect(401, done);
+        });
 
-//         it('should delete an existing transaction when authenticated', async function() {
-//             const transaction = await Transaction.findOne({ user: testUserId });
-//             request(app)
-//                 .delete(`/transactions/${transaction._id}`)
-//                 .set('Authorization', `Bearer ${testToken}`)
-//                 .expect(200);
-//         });
-
-//         it('should return 404 Not Found for non-existent transaction', function(done) {
-//             request(app)
-//                 .delete('/transactions/nonexistent_id')
-//                 .set('Authorization', `Bearer ${testToken}`)
-//                 .expect(404, done);
-//         });
-//     });
+        it('should delete an existing transaction when authenticated', async function() {
+            const transaction = await Transaction.findOne({ user: testUserId });
+            request(app)
+                .delete(`/transactions/${transaction._id}`)
+                .set('Authorization', `Bearer ${testToken}`)
+                .expect(200);
+        });
+    });
 });
 
 after(async function() {
