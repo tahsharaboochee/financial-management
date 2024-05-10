@@ -15,14 +15,10 @@ router.post('/users/register', async (req, res) => {
         const { username, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 8);
         const user = new User({ username, email, password: hashedPassword });
-        await user.save();
         const token = generateToken(user._id.toString());
-        const userToSend = {
-            _id: user._id,
-            username: user.username,
-            email: user.email
-        };
-        res.status(201).send({ user: userToSend, token });
+        user.tokens = user.tokens.concat({ token });  // Save the token to the user's tokens array
+        await user.save();
+        res.status(201).send({ user, token });
     } catch (error) {
         res.status(400).send({ error: 'Failed to register user. Make sure the email is unique and valid.' });
     }
@@ -41,12 +37,9 @@ router.post('/users/login', async (req, res) => {
             return res.status(401).send({ error: 'Invalid credentials' });
         }
         const token = generateToken(user._id.toString());
-        const userToSend = {
-            _id: user._id,
-            username: user.username,
-            email: user.email
-        };
-        res.send({ user: userToSend, token });
+        user.tokens = user.tokens.concat({ token });  // Save the token to the user's tokens array
+        await user.save();
+        res.send({ user, token });
     } catch (error) {
         res.status(500).send({ error: 'Server error during login.' });
     }
