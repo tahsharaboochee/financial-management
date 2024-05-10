@@ -33,10 +33,8 @@ describe('Transaction Tests', function() {
         });
 
         it('should update an existing transaction when authenticated', async function() {
-            const transaction = await Transaction.findOne({ user: testUserId });
-            // console.log("Found Transaction:", transaction);
             request(app)
-                .patch(`/transactions/${transaction._id}`)
+                .patch(`/transactions/${testUserId}`)
                 .set('Authorization', `Bearer ${testToken}`)
                 .send({ amount: 200 })
                 .expect(200);
@@ -51,9 +49,8 @@ describe('Transaction Tests', function() {
         });
 
         it('should delete an existing transaction when authenticated', async function() {
-            const transaction = await Transaction.findOne({ user: testUserId });
             request(app)
-                .delete(`/transactions/${transaction._id}`)
+                .delete(`/transactions/${testUserId}`)
                 .set('Authorization', `Bearer ${testToken}`)
                 .expect(200);
         });

@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const Transaction = require('../models/transaction');
+const Goal = require('../models/goal');
 
 let testToken;
 let testUserId;
@@ -32,12 +33,32 @@ async function setupTestUser() {
     await Transaction.create(testTransactions);
     // console.log('Test transactions created successfully:', user, testToken, testUserId );
     // console.log('Test User ID:', testUserId, 'User:', user, 'test Token:', testToken);
+    const testGoals = [
+        { 
+            user: testUserId, 
+            targetAmount: 1000, 
+            currentAmount: 0, // Assuming this is a default value
+            description: 'Test Goal 1 Description', 
+            deadline: new Date('2024-12-31') // Example deadline date
+        },
+        { 
+            user: testUserId, 
+            targetAmount: 2000, 
+            currentAmount: 0, // Assuming this is a default value
+            description: 'Test Goal 2 Description', 
+            deadline: new Date('2025-12-31') // Example deadline date
+        },
+    ];
+
+    await Goal.create(testGoals);
 
     return { user, testToken, testUserId };
 }
 
 async function cleanupTestData() {
     await Transaction.deleteMany({ user: testUserId });
+    await Goal.deleteMany({ user: testUserId });
+
 }
 
-module.exports = { setupTestUser, testToken, testUserId, cleanupTestData };
+module.exports = { setupTestUser, cleanupTestData };

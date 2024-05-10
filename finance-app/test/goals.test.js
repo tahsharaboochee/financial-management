@@ -1,13 +1,15 @@
 const request = require('supertest');
 const app = require('../server');
-const { setupTestUser, testToken } = require('./testSetup');
+const { setupTestUser, cleanupTestData} = require('./testSetup');
 const Goal = require('../models/goal');
 const expect = require('chai').expect;
 
 let createdGoalId;
 
 before(async function() {
-    await setupTestUser();
+    const setupResult = await setupTestUser();
+    testUserId = setupResult.testUserId;
+    testToken = setupResult.testToken;
 });
 
 describe('Goals Routes', function() {
@@ -92,5 +94,5 @@ describe('Goals Routes', function() {
 
 after(async function() {
     // Clean up any test data created during tests
-    await Goal.deleteOne({ _id: createdGoalId });
+    await cleanupTestData();
 });

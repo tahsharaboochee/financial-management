@@ -1,37 +1,84 @@
-const request = require('supertest');
-const app = require('../server'); 
-const expect = require('chai').expect;
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const sinon = require('sinon');
 const { setupTestUser, cleanupTestData } = require('./testSetup');
+const server = require('../server'); // Assuming your Express app is exported from 'app.js'
 
-let testToken;
+chai.use(chaiHttp);
+const { expect } = chai;
 
-before(async function() {
-    const setupResult = await setupTestUser();
-    testUserId = setupResult.testUserId;
-    testToken = setupResult.testToken;
-});
+describe('User Authentication Routes', () => {
+    let user, token;
 
-describe('User Authentication Tests', function() {
-    it('should authenticate user with correct credentials', function(done) {
-        request(app)
-            .post('/users/login')
-            .send({ email: 'testuser@example.com', password: 'Password123' })
-            .expect(200)
-            .end(function(err, res) {
-                expect(res.body).to.have.property('token');
-                done(err);
-            });
+    before(async () => {
+        ({ user, testToken: token } = await setupTestUser());
     });
 
-    it('should reject login with incorrect password', function(done) {
-        request(app)
-            .post('/users/login')
-            .send({ email: 'testuser@example.com', password: 'wrongPassword' })
-            .expect(401, done); // 401 Unauthorized
+    after(async () => {
+        await cleanupTestData();
     });
-});
 
-after(async function() {
-    // clean up any test data created during tests
-    await cleanupTestData();
+    describe('POST /users/register', () => {
+        it('should register a new user', (done) => {
+            chai.request(server)
+                .post('/users/register')
+                .send({
+                    username: 'newUser',
+                    email: 'newuser@example.com',
+                    password: 'NewPass123'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(201);
+                    expect(res.body).to.have.property('user');
+                    expect(res.body.user).to.have.property('tokens');
+                    done();
+                });
+        });
+
+        it('should not register a user with duplicate email', (done) => {
+            chai.request(server)
+                .post('/users/register')
+                .send({
+                    username: 'testuser',
+                    email: 'testuser@example.com',
+                    password: 'Password123'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(400);
+                    expect(res.body).to.have.property('error');
+                    done();
+                });
+        });
+    });
+
+    describe('POST /users/login', () => {
+        it('should login an existing user', (done) => {
+            chai.request(server)
+                .post('/users/login')
+                .send({
+                    email: 'testuser@example.com',
+                    password: 'Password123'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.have.property('user');
+                    expect(res.body.user).to.have.property('tokens');
+                    done();
+                });
+        });
+
+        it('should not login with incorrect password', (done) => {
+            chai.request(server)
+                .post('/users/login')
+                .send({
+                    email: 'testuser@example.com',
+                    password: 'wrongPassword'
+                })
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    expect(res.body).to.have.property('error');
+                    done();
+                });
+        });
+    });
 });

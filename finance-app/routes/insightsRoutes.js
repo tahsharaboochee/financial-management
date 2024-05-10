@@ -7,10 +7,12 @@ const router = express.Router();
 // Get spending by category
 router.get('/spending-by-category', auth, async (req, res) => {
     try {
+        // console.log('Insights Routes file Authenticated User ID:', req.user._id); // Log the authenticated user ID
         const spending = await Transaction.aggregate([
             { $match: { user: req.user._id, type: 'expense' } },
             { $group: { _id: '$category', totalSpent: { $sum: '$amount' } } }
         ]);
+        console.log('Spending by Category:', spending); // Log the spending data for debugging
         res.send(spending);
     } catch (error) {
         res.status(500).send({ error: 'Error fetching spending by category' });
