@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
 
 // Post a new transaction
 router.post('/', auth, async (req, res) => {
-    const { type, amount, category } = req.body;
+    const { type, amount, category, date } = req.body;
 
     // Validate transaction category
     if (!isValidCategory(category)) {

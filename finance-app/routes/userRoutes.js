@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
 };
 
 // Route definitions
-router.post('/users/register', asyncMiddleware(registerUser));
-router.post('/users/login', asyncMiddleware(loginUser));
+router.post('/register', asyncMiddleware(registerUser));
+router.post('/login', asyncMiddleware(loginUser));
 
 module.exports = router;
