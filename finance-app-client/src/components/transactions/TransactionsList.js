@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import TransactionForm from './TransactionForm';
 import './TransactionsList.css';
+import { Link } from 'react-router-dom';
 
 function TransactionsList() {
   const [transactions, setTransactions] = useState([]);
@@ -52,13 +52,15 @@ function TransactionsList() {
   return (
     <div>
       <h2>Transactions</h2>
-      <Link to="/dashboard">Back to Dashboard</Link>
+      <div className="navigation">
+        <Link to="/dashboard">Back to Dashboard</Link>
+      </div>
       {error && <div className="error">{error}</div>}
       <ul>
         {transactions.map(transaction => (
           <li key={transaction._id}>
             {transaction.date} - {transaction.type}: ${transaction.amount} - {transaction.category}
-            <button onClick={() => handleEdit(transaction._id)}>Edit</button>
+            <button className="edit" onClick={() => handleEdit(transaction._id)}>Edit</button>
             <button onClick={() => handleDelete(transaction._id)}>Delete</button>
           </li>
         ))}

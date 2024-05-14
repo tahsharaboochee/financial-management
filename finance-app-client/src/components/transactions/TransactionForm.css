@@ -32,3 +32,19 @@ form button:hover {
   color: red;
   margin-top: 10px;
 }
+
+/* Additional styles for navigation */
+.navigation {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.navigation a {
+  margin: 0 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+}
