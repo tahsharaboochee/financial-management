@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard';
 import Home from './components/Home';
 import './App.css';
 import TransactionsList from './components/transactions/TransactionsList';
-// import GoalsList from './components/goals/GoalsList';
+import GoalsList from './components/goals/GoalsList';
 
 function App() {
   const isAuthenticated = () => {
@@ -21,7 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/transactions" element={isAuthenticated() ? <TransactionsList /> : <Navigate to="/login" />} />
-          {/* <Route path="/goals" element={isAuthenticated() ? <GoalsList /> : <Navigate to="/login" />} */}
+          <Route path="/goals" element={isAuthenticated() ? <GoalsList /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

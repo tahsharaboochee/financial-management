@@ -7,7 +7,12 @@ function Home() {
     <div className="home">
       <h1>Welcome to Personal Finance Management</h1>
       <p>Track your income, expenses, and savings to make informed financial decisions.</p>
-      <Link to="/login">Login</Link>
+      <nav>
+        <ul>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/register">Register</Link></li>
+        </ul>
+      </nav>
     </div>
   );
 }
