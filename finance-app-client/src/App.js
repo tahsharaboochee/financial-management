@@ -12,11 +12,12 @@ function App() {
   const isAuthenticated = () => {
     return localStorage.getItem('token') !== null;
   };
+
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="/" component={Home} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />} />

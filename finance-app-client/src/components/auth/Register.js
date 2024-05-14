@@ -1,39 +1,41 @@
+// src/components/auth/Register.js
 import React, { useState } from 'react';
-import axios from 'axios'; // For making HTTP requests to your backend
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Register({ history }) {
+function Register() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: '',
-    confirmPassword: ''
+    password: ''
   });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const { username, email, password, confirmPassword } = formData;
+  const { username, email, password } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
+    setError('');
 
     try {
-      const response = await axios.post('http://localhost:3000/users/register', {
-        username,
-        email,
-        password
-      });
-
-      console.log('Registration Successful:', response.data);
-      localStorage.setItem('token', response.data.token);
-      history.push('/dashboard'); // Redirect to dashboard upon successful registration
+      const response = await axios.post('http://localhost:3000/users/register', formData);
+      if (response.status === 201) {
+        console.log('Registration Successful:', response.data);
+        // Navigate to the login page after successful registration
+        navigate('/login');
+      } else {
+        setError('Unexpected response status: ' + response.status);
+      }
     } catch (err) {
+      console.error('Error:', err);
       if (err.response) {
-        setError(err.response.data.error);
+        setError(err.response.data.error || 'Unknown error occurred.');
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+        setError('No response received from the server.');
       } else {
         setError('Registration failed. Please try again later.');
       }
@@ -70,16 +72,6 @@ function Register({ history }) {
             type="password"
             name="password"
             value={password}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
             onChange={onChange}
             required
           />
