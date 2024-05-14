@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // For making HTTP requests to your backend
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ history }) {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // State to handle any errors
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); // Clear previous errors
+    setError('');
 
     try {
-      // Post request to your backend
       const response = await axios.post('http://localhost:3000/users/login', {
         email,
         password
       });
 
-      // Assume the backend sends back the token and user data
-      console.log('Login Successful:', response.data);
-      localStorage.setItem('token', response.data.token); // Save the token to local storage (or context/state)
-      history.push('/dashboard'); // Redirect to a dashboard on successful login
-    } catch (err) {
-      // Handle errors if login fails
-      if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        setError(err.response.data.error);
+      if (response.status === 200) {
+        console.log('Login Successful:', response.data);
+        localStorage.setItem('token', response.data.token);
+        navigate('/dashboard');
       } else {
-        // Something happened in setting up the request that triggered an Error
+        setError('Unexpected response status: ' + response.status);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      if (err.response) {
+        setError(err.response.data.error || 'Unknown error occurred.');
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+        setError('No response received from the server.');
+      } else {
         setError('Login failed. Please try again later.');
       }
     }

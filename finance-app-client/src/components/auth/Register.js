@@ -22,7 +22,7 @@ function Register({ history }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/users/register', {
+      const response = await axios.post('http://localhost:3000/users/register', {
         username,
         email,
         password

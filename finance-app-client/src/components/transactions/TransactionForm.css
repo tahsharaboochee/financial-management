@@ -1,0 +1,17 @@
+form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  form input, form select {
+    margin-top: 5px;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  
