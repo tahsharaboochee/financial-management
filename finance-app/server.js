@@ -6,30 +6,40 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const goalRoutes = require('./routes/goalRoutes');
 const insightsRoutes = require('./routes/insightsRoutes');
 const authMiddleware = require('./middleware/auth');
-
+const cors = require('cors');
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
+// CORS configuration
+app.use(cors({
+    origin: 'http://localhost:3001',
+    credentials: true, 
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+app.options('*', cors());  // This will enable preflight across all routes
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// User routes for registration and login
+// Route middleware
 app.use(userRoutes);
-
-// Transaction routes
 app.use('/transactions', transactionRoutes);
-
-// Goal routes
 app.use('/goals', goalRoutes);
-
-// insights routes
 app.use('/insights', insightsRoutes);
 
-// Example test route to check authentication
+// Test route to check authentication
 app.get('/test-auth', authMiddleware, (req, res) => {
     res.send(`Hello, ${req.user.username}! Authentication middleware is working.`);
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).send({ error: 'An unexpected error occurred' });
 });
 
 const PORT = process.env.PORT || 3000;
