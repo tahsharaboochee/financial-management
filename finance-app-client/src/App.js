@@ -16,10 +16,10 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route path="/" component={Home} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />} />
-          <Route path="/" component={Home} />
           <Route path="/transactions" element={isAuthenticated() ? <TransactionsList /> : <Navigate to="/login" />} />
           {/* <Route path="/goals" element={isAuthenticated() ? <GoalsList /> : <Navigate to="/login" />} */}
         </Routes>

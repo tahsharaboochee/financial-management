@@ -17,7 +17,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing }) {
       // Fetch the transaction data for editing
       const fetchTransaction = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/transactions/${transactionId}`, {
+          const response = await axios.get(`http://localhost:3000/transactions/${transactionId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
           });
           setFormData({ ...response.data });
@@ -41,7 +41,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing }) {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       };
       const method = isEditing ? 'patch' : 'post';
-      const url = isEditing ? `http://localhost:5000/transactions/${transactionId}` : 'http://localhost:5000/transactions';
+      const url = isEditing ? `http://localhost:3000/transactions/${transactionId}` : 'http://localhost:3000/transactions';
       const response = await axios[method](url, formData, config);
 
       if (isEditing) {
@@ -88,13 +88,11 @@ function TransactionForm({ transactionId, setTransactions, isEditing }) {
         </label>
         <label>
           Category:
-          <input
-            type="text"
-            name="category"
-            value={category}
-            onChange={onChange}
-            required
-          />
+          <select name="category" value={category} onChange={onChange}>
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+            <option value="saving">Saving</option>
+          </select>
         </label>
         <label>
           Date:
