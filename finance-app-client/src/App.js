@@ -10,7 +10,9 @@ import GoalsList from './components/goals/GoalsList';
 
 function App() {
   const isAuthenticated = () => {
-    return localStorage.getItem('token') !== null;
+    const token = localStorage.getItem('token');
+    console.log('Checking token in localStorage:', token);
+    return token !== null;
   };
 
   return (

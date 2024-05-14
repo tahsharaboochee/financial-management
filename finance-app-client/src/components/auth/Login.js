@@ -21,7 +21,9 @@ function Login() {
       if (response.status === 200) {
         console.log('Login Successful:', response.data);
         localStorage.setItem('token', response.data.token);
+        console.log('Token set in localStorage:', localStorage.getItem('token'));
         navigate('/dashboard');  // Navigate to the dashboard upon successful login
+        console.log('Navigating to dashboard');
       } else {
         setError('Unexpected response status: ' + response.status);
       }
