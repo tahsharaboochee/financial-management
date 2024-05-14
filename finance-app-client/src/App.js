@@ -4,15 +4,18 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/Dashboard';
 import Home from './components/Home';
-import './App.css';
 import TransactionsList from './components/transactions/TransactionsList';
 import GoalsList from './components/goals/GoalsList';
+import './App.css';
+import './components/Dashboard.css';
+import './components/transactions/TransactionsList.css';
+import './components/transactions/TransactionForm.css';
+import './components/goals/GoalsList.css';
+import './components/goals/GoalForm.css';
 
 function App() {
   const isAuthenticated = () => {
-    const token = localStorage.getItem('token');
-    console.log('Checking token in localStorage:', token);
-    return token !== null;
+    return localStorage.getItem('token') !== null;
   };
 
   return (

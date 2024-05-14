@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import TransactionForm from './TransactionForm';
+import './TransactionsList.css';
 
 function TransactionsList() {
   const [transactions, setTransactions] = useState([]);
@@ -50,6 +52,7 @@ function TransactionsList() {
   return (
     <div>
       <h2>Transactions</h2>
+      <Link to="/dashboard">Back to Dashboard</Link>
       {error && <div className="error">{error}</div>}
       <ul>
         {transactions.map(transaction => (

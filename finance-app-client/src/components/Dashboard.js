@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './Dashboard.css';
 import api from '../api';  // Import the api instance
 
 function Dashboard() {
@@ -62,6 +63,10 @@ function Dashboard() {
     <div className="dashboard">
       <h1>Dashboard</h1>
       <button onClick={handleLogout}>Logout</button>
+      <section className="navigation">
+        <Link to="/transactions">Manage Transactions</Link>
+        <Link to="/goals">Manage Goals</Link>
+      </section>
       <section className="transactions">
         <h2>Transactions</h2>
         <ul>

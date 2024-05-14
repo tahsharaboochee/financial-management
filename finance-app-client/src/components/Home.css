@@ -1,0 +1,30 @@
+.home {
+    text-align: center;
+    padding: 50px 20px;
+  }
+  
+  .home h1 {
+    margin-bottom: 20px;
+  }
+  
+  .home p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  
+  .home nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .home nav ul li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  
+  .home nav ul li a {
+    font-size: 18px;
+    color: #007bff;
+  }
+  

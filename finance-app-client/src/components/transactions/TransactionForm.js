@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './TransactionForm.css';
 
 function TransactionForm({ transactionId, setTransactions, isEditing }) {
   const [formData, setFormData] = useState({
