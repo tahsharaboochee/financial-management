@@ -1,6 +1,6 @@
 import React from 'react';
 import './About.css';
-
+import photo from '../images/about.png'
 function About() {
   return (
     <div className="about-container">
@@ -32,7 +32,7 @@ function About() {
           </p>
         </div>
         <div className="image-section">
-          <img src="finance-app-client/public/images/about.png" alt="About Us" />
+          <img src={photo} alt="About Us" />
         </div>
       </main>
     </div>

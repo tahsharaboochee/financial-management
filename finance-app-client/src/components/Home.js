@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import photo from '../images/budget-photo.png';
 
 function Home() {
   return (
@@ -21,11 +22,11 @@ function Home() {
       <main className="main-content">
         <div className="intro">
           <h1>Introducing a new Financial budgeting app!</h1>
-          <p>Review transactions, monitor your spending and track your networth.</p>
+          <p>Review transactions, monitor your spending and track your net worth.</p>
           <Link to="/register" className="cta-button">Check it out</Link>
         </div>
         <div className="image-section">
-          <img src="finance-app-client/public/images/budget-photo.png" alt="Financial Wellness" />
+          <img src={photo} alt="Financial Wellness" />
         </div>
       </main>
     </div>
