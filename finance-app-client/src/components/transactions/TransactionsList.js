@@ -69,6 +69,7 @@ function TransactionsList() {
         transactionId={currentTransactionId}
         setTransactions={setTransactions}
         isEditing={isEditing}
+        setIsEditing={setIsEditing}
       />
     </div>
   );
