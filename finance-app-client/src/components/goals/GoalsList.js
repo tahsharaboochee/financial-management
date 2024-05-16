@@ -50,13 +50,13 @@ function GoalsList() {
   }, []);
 
   return (
-    <div>
+    <div className="goals-container">
       <h2>Goals</h2>
       <div className="navigation">
         <Link to="/dashboard">Back to Dashboard</Link>
       </div>
       {error && <div className="error">{error}</div>}
-      <ul>
+      <ul className="goals-list">
         {goals.map(goal => (
           <li key={goal._id}>
             {goal.description} - Target: ${goal.targetAmount} - Current: ${goal.currentAmount} - Deadline: {goal.deadline}
@@ -70,6 +70,7 @@ function GoalsList() {
         setGoals={setGoals}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
+        setCurrentGoalId={setCurrentGoalId}
       />
     </div>
   );

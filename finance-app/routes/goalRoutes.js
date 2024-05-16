@@ -27,6 +27,22 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+// Retrieve a specific goal by ID
+router.get('/:id', auth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const goal = await Goal.findOne({ _id: id, user: req.user._id });
+
+        if (!goal) {
+            return res.status(404).send({ error: 'Goal not found' });
+        }
+
+        res.send(goal);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
 // Update a specific goal
 router.patch('/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body);
@@ -63,7 +79,7 @@ router.delete('/:id', auth, async (req, res) => {
 
         res.send(goal);
     } catch (error) {
-        res.status(500).send({ error: 'Error deleting goal' });
+        res.status(500).send({ error: 'Internal server error' });
     }
 });
 
