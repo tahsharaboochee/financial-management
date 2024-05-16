@@ -71,7 +71,7 @@ function Dashboard() {
         <h2>Transactions</h2>
         <ul>
           {transactions.map(transaction => (
-            <li key={transaction.id}>
+            <li key={transaction._id}>
               {transaction.description} - ${transaction.amount} ({transaction.type})
             </li>
           ))}
@@ -81,8 +81,8 @@ function Dashboard() {
         <h2>Financial Goals</h2>
         <ul>
           {goals.map(goal => (
-            <li key={goal.id}>
-              {goal.name} - ${goal.amount} ({goal.progress}%)
+            <li key={goal._id}>
+              {goal.description} - Target: ${goal.targetAmount}, Current: ${goal.currentAmount}
             </li>
           ))}
         </ul>
@@ -108,7 +108,7 @@ function Dashboard() {
         <ul>
           {goalsProgress.map(goal => (
             <li key={goal._id}>
-              {goal.name} - Progress: {goal.progress}%
+              {goal.description} - Progress: {((goal.currentAmount / goal.targetAmount) * 100).toFixed(2)}%
             </li>
           ))}
         </ul>
