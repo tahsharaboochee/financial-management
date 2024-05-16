@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const sinon = require('sinon');
 const { setupTestUser, cleanupTestData } = require('./testSetup');
-const server = require('../server'); // Assuming your Express app is exported from 'app.js'
+const server = require('../server');
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -11,11 +11,12 @@ describe('User Authentication Routes', () => {
     let user, token;
 
     before(async () => {
+        await cleanupTestData(); // Clean up any test data before starting tests
         ({ user, testToken: token } = await setupTestUser());
     });
 
     after(async () => {
-        await cleanupTestData();
+        await cleanupTestData(); // Clean up test data after all tests
     });
 
     describe('POST /users/register', () => {

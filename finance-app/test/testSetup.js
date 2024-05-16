@@ -9,45 +9,25 @@ let testUserId;
 async function setupTestUser() {
     const userData = { username: 'testuser', email: 'testuser@example.com', password: 'Password123' };
 
-    let user = await User.findOne({ email: userData.email });
-    if (!user) {
-        user = await new User(userData).save();
-    }
+    // Clean up any existing user with the same email
+    await User.deleteMany({ email: userData.email });
 
-    // console.log("Found User:", user);
+    let user = await new User(userData).save();
+
     testUserId = user._id;
-    // console.log("Test User ID:", testUserId);
-
     testToken = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Create test transactions
     const testTransactions = [
         { user: testUserId, type: 'income', amount: 100, category: 'income' },
         { user: testUserId, type: 'expense', amount: 50, category: 'expense' },
         { user: testUserId, type: 'saving', amount: 200, category: 'saving' },
     ];
 
-    // const savedTransactions = await Transaction.create(testTransactions);
-
-    // console.log('Test transactions created successfully:', savedTransactions);
     await Transaction.create(testTransactions);
-    // console.log('Test transactions created successfully:', user, testToken, testUserId );
-    // console.log('Test User ID:', testUserId, 'User:', user, 'test Token:', testToken);
+
     const testGoals = [
-        { 
-            user: testUserId, 
-            targetAmount: 1000, 
-            currentAmount: 0, // Assuming this is a default value
-            description: 'Test Goal 1 Description', 
-            deadline: new Date('2024-12-31') // Example deadline date
-        },
-        { 
-            user: testUserId, 
-            targetAmount: 2000, 
-            currentAmount: 0, // Assuming this is a default value
-            description: 'Test Goal 2 Description', 
-            deadline: new Date('2025-12-31') // Example deadline date
-        },
+        { user: testUserId, targetAmount: 1000, currentAmount: 0, description: 'Test Goal 1 Description', deadline: new Date('2024-12-31') },
+        { user: testUserId, targetAmount: 2000, currentAmount: 0, description: 'Test Goal 2 Description', deadline: new Date('2025-12-31') },
     ];
 
     await Goal.create(testGoals);
@@ -56,9 +36,9 @@ async function setupTestUser() {
 }
 
 async function cleanupTestData() {
-    await Transaction.deleteMany({ user: testUserId });
-    await Goal.deleteMany({ user: testUserId });
-
+    await User.deleteMany({});
+    await Transaction.deleteMany({});
+    await Goal.deleteMany({});
 }
 
 module.exports = { setupTestUser, cleanupTestData };

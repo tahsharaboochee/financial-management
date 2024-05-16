@@ -1,15 +1,20 @@
 const request = require('supertest');
 const app = require('../server');
-const { setupTestUser, cleanupTestData} = require('./testSetup');
+const { setupTestUser, cleanupTestData } = require('./testSetup');
 const Goal = require('../models/goal');
 const expect = require('chai').expect;
 
-let createdGoalId;
+let testUserId, testToken, createdGoalId;
 
 before(async function() {
+    await cleanupTestData(); // Ensure clean state before tests
     const setupResult = await setupTestUser();
     testUserId = setupResult.testUserId;
     testToken = setupResult.testToken;
+});
+
+after(async function() {
+    await cleanupTestData(); // Clean up any test data after tests
 });
 
 describe('Goals Routes', function() {
@@ -28,9 +33,10 @@ describe('Goals Routes', function() {
                 .send({ description: 'New Goal', targetAmount: 1000, currentAmount: 0, deadline: '2025-12-31' })
                 .expect(201)
                 .end(function(err, res) {
+                    if (err) return done(err);
                     expect(res.body).to.have.property('_id');
                     createdGoalId = res.body._id;
-                    done(err);
+                    done();
                 });
         });
     });
@@ -47,9 +53,27 @@ describe('Goals Routes', function() {
                 .get('/goals')
                 .set('Authorization', `Bearer ${testToken}`)
                 .expect(200)
-                .end(function(err, res) {
+                .end(async function(err, res) {
+                    if (err) {
+                        console.error('Error:', err);
+                        return done(err);
+                    }
+                    console.log('Response Body:', res.body); // Add logging to help debug
                     expect(res.body).to.be.an('array');
-                    done(err);
+
+                    // Fetch goals directly from the database for verification
+                    const goalsInDb = await Goal.find({ user: testUserId });
+                    console.log('Goals in Database:', goalsInDb);
+
+                    // Ensure the response matches the goals in the database
+                    expect(res.body.length).to.equal(goalsInDb.length);
+                    res.body.forEach(goal => {
+                        const goalInDb = goalsInDb.find(g => g._id.toString() === goal._id);
+                        expect(goalInDb).to.not.be.undefined;
+                        expect(goal.description).to.equal(goalInDb.description);
+                    });
+
+                    done();
                 });
         });
     });
@@ -69,9 +93,10 @@ describe('Goals Routes', function() {
                 .send({ description: 'Updated Goal' })
                 .expect(200)
                 .end(function(err, res) {
+                    if (err) return done(err);
                     expect(res.body).to.have.property('_id', createdGoalId);
                     expect(res.body.description).to.equal('Updated Goal');
-                    done(err);
+                    done();
                 });
         });
     });
@@ -90,9 +115,4 @@ describe('Goals Routes', function() {
                 .expect(200, done);
         });
     });
-});
-
-after(async function() {
-    // Clean up any test data created during tests
-    await cleanupTestData();
 });
