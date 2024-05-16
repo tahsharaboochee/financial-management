@@ -51,14 +51,14 @@ function TransactionsList() {
 
   return (
     <div className="transactions-container">
-      <h2>Transactions</h2>
+      <h2 className="section-title">Transactions</h2>
       <div className="navigation">
         <Link to="/dashboard">Back to Dashboard</Link>
       </div>
       {error && <div className="error">{error}</div>}
       <ul className="transactions-list">
         {transactions.map(transaction => (
-          <li key={transaction._id}>
+          <li key={transaction._id} className="transaction-item">
             {transaction.date} - {transaction.type}: ${transaction.amount} - {transaction.category}
             <button className="edit" onClick={() => handleEdit(transaction._id)}>Edit</button>
             <button onClick={() => handleDelete(transaction._id)}>Delete</button>
@@ -70,7 +70,6 @@ function TransactionsList() {
         setTransactions={setTransactions}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
-        setCurrentTransactionId={setCurrentTransactionId}
       />
     </div>
   );
