@@ -3,9 +3,10 @@ const Transaction = require('../models/transaction');
 const auth = require('../middleware/auth');
 const router = express.Router();
 
+const allowedCategories = ['Groceries', 'Job', 'Utilities', 'Rent', 'Salary', 'Investment', 'Entertainment', 'Miscellaneous'];
+
 // Validate transaction categories
 const isValidCategory = (category) => {
-    const allowedCategories = ['income', 'expense', 'saving'];
     return allowedCategories.includes(category);
 };
 

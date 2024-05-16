@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const allowedCategories = ['Groceries', 'Job', 'Utilities', 'Rent', 'Salary', 'Investment', 'Entertainment', 'Miscellaneous'];
+
 const transactionSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     type: { type: String, enum: ['income', 'expense', 'saving'], required: true },
@@ -9,7 +11,6 @@ const transactionSchema = new mongoose.Schema({
         required: true, 
         validate: {
             validator: function(value) {
-                const allowedCategories = ['income', 'expense', 'saving'];
                 return allowedCategories.includes(value);
             },
             message: 'Invalid category'
