@@ -50,13 +50,13 @@ function TransactionsList() {
   }, []);
 
   return (
-    <div>
+    <div className="transactions-container">
       <h2>Transactions</h2>
       <div className="navigation">
         <Link to="/dashboard">Back to Dashboard</Link>
       </div>
       {error && <div className="error">{error}</div>}
-      <ul>
+      <ul className="transactions-list">
         {transactions.map(transaction => (
           <li key={transaction._id}>
             {transaction.date} - {transaction.type}: ${transaction.amount} - {transaction.category}
@@ -70,6 +70,7 @@ function TransactionsList() {
         setTransactions={setTransactions}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
+        setCurrentTransactionId={setCurrentTransactionId}
       />
     </div>
   );

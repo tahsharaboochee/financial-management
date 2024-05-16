@@ -4,7 +4,7 @@ import './TransactionForm.css';
 
 const allowedCategories = ['Groceries', 'Job', 'Utilities', 'Rent', 'Salary', 'Investment', 'Entertainment', 'Miscellaneous'];
 
-function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditing }) {
+function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditing, setCurrentTransactionId }) {
   const [formData, setFormData] = useState({
     type: 'expense', // default type
     amount: '',
@@ -23,8 +23,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditi
           const response = await axios.get(`http://localhost:3000/transactions/${transactionId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
           });
-          const { type, amount, category, date, tags, recurring, frequency } = response.data;
-          setFormData({ type, amount, category, date, tags, recurring, frequency });
+          setFormData({ ...response.data });
         } catch (err) {
           setError('Failed to fetch transaction data');
         }
@@ -46,27 +45,13 @@ function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditi
       };
       const method = isEditing ? 'patch' : 'post';
       const url = isEditing ? `http://localhost:3000/transactions/${transactionId}` : 'http://localhost:3000/transactions';
-
-      // Only include allowed fields in the payload
-      const { type, amount, category, date, tags, recurring, frequency } = formData;
-      const payload = { type, amount, category, date, tags, recurring, frequency };
-
-      const response = await axios[method](url, payload, config);
+      const response = await axios[method](url, formData, config);
 
       if (isEditing) {
         // Update the UI optimistically
-        setTransactions(prev => prev.map(tr => tr._id === transactionId ? { ...tr, ...payload } : tr));
-        // Reset the editing state
+        setTransactions(prev => prev.map(tr => tr._id === transactionId ? { ...tr, ...formData } : tr));
         setIsEditing(false);
-        setFormData({
-          type: 'expense',
-          amount: '',
-          category: allowedCategories[0], // Reset to the default category
-          date: '',
-          tags: [],
-          recurring: false,
-          frequency: null
-        });
+        setCurrentTransactionId(null);
       } else {
         // Append to the list of transactions
         setTransactions(prev => [...prev, response.data]);
@@ -77,10 +62,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditi
         type: 'expense',
         amount: '',
         category: allowedCategories[0], // Reset to the default category
-        date: '',
-        tags: [],
-        recurring: false,
-        frequency: null
+        date: ''
       });
     } catch (err) {
       setError('Failed to submit transaction');
@@ -88,7 +70,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing, setIsEditi
   };
 
   return (
-    <div>
+    <div className="transaction-form-container">
       <h2>{isEditing ? 'Edit Transaction' : 'Add Transaction'}</h2>
       <form onSubmit={handleSubmit}>
         <label>

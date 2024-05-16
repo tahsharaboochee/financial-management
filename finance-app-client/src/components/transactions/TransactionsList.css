@@ -1,93 +1,37 @@
-.transactions {
+.transactions-container {
   padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
-.transactions h2 {
+.transactions-container h2 {
   text-align: center;
 }
 
-.transactions .navigation {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.transactions .navigation a {
-  margin: 0 10px;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.transactions .navigation a:hover {
-  text-decoration: underline;
-}
-
-.transactions ul {
-  list-style: none;
+.transactions-list {
+  list-style-type: none;
   padding: 0;
 }
 
-.transactions ul li {
-  background: white;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
+.transactions-list li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
-.transactions ul li button {
-  padding: 5px 10px;
-  margin-left: 5px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  cursor: pointer;
+.transactions-list button {
+  margin-left: 10px;
 }
 
-.transactions ul li button:hover {
-  background-color: #d32f2f;
-}
-
-.transactions ul li button.edit {
-  background-color: #4CAF50;
-}
-
-.transactions ul li button.edit:hover {
-  background-color: #45a049;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
+.navigation {
+  text-align: center;
   margin-bottom: 20px;
 }
 
-form label {
-  margin-bottom: 10px;
-}
-
-form input, form select {
-  margin-top: 5px;
-  padding: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-form button {
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-form button:hover {
-  background-color: #45a049;
+.navigation a {
+  margin: 0 10px;
 }
