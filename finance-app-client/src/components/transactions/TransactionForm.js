@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TransactionForm.css';
 
+const allowedCategories = ['Groceries', 'Job', 'Utilities', 'Rent', 'Salary', 'Investment', 'Entertainment', 'Miscellaneous'];
+
 function TransactionForm({ transactionId, setTransactions, isEditing }) {
   const [formData, setFormData] = useState({
     type: 'expense', // default type
     amount: '',
-    category: '',
+    category: allowedCategories[0], // Default to the first category in the list
     date: ''
   });
   const [error, setError] = useState('');
@@ -57,7 +59,7 @@ function TransactionForm({ transactionId, setTransactions, isEditing }) {
       setFormData({
         type: 'expense',
         amount: '',
-        category: '',
+        category: allowedCategories[0], // Reset to the default category
         date: ''
       });
     } catch (err) {
@@ -90,9 +92,9 @@ function TransactionForm({ transactionId, setTransactions, isEditing }) {
         <label>
           Category:
           <select name="category" value={category} onChange={onChange}>
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-            <option value="saving">Saving</option>
+            {allowedCategories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
           </select>
         </label>
         <label>

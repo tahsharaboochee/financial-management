@@ -1,18 +1,42 @@
-ul {
-  list-style-type: none;
+.transactions {
+  padding: 20px;
+}
+
+.transactions h2 {
+  text-align: center;
+}
+
+.transactions .navigation {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.transactions .navigation a {
+  margin: 0 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.transactions .navigation a:hover {
+  text-decoration: underline;
+}
+
+.transactions ul {
+  list-style: none;
   padding: 0;
 }
 
-li {
+.transactions ul li {
+  background: white;
   padding: 10px;
-  border: 1px solid #ddd;
   margin-bottom: 10px;
+  border: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-li button {
+.transactions ul li button {
   padding: 5px 10px;
   margin-left: 5px;
   background-color: #f44336;
@@ -21,15 +45,15 @@ li button {
   cursor: pointer;
 }
 
-li button:hover {
+.transactions ul li button:hover {
   background-color: #d32f2f;
 }
 
-li button.edit {
+.transactions ul li button.edit {
   background-color: #4CAF50;
 }
 
-li button.edit:hover {
+.transactions ul li button.edit:hover {
   background-color: #45a049;
 }
 
@@ -38,18 +62,32 @@ li button.edit:hover {
   margin-top: 10px;
 }
 
-/* Additional styles for navigation */
-.navigation {
-  text-align: center;
+form {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 }
 
-.navigation a {
-  margin: 0 10px;
-  color: #007bff;
-  text-decoration: none;
+form label {
+  margin-bottom: 10px;
 }
 
-.navigation a:hover {
-  text-decoration: underline;
+form input, form select {
+  margin-top: 5px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+form button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+form button:hover {
+  background-color: #45a049;
 }
