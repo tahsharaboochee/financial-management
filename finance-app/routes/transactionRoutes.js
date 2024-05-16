@@ -20,6 +20,23 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+// Get a specific transaction by ID
+router.get('/:id', auth, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const transaction = await Transaction.findOne({ _id: id, user: req.user._id });
+
+        if (!transaction) {
+            return res.status(404).send({ error: 'Transaction not found' });
+        }
+
+        res.send(transaction);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
 // Post a new transaction
 router.post('/', auth, async (req, res) => {
     const { type, amount, category, date } = req.body;
@@ -44,7 +61,7 @@ router.post('/', auth, async (req, res) => {
 // Update a transaction
 router.patch('/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['type', 'amount', 'category', 'date'];
+    const allowedUpdates = ['type', 'amount', 'category', 'date', 'tags', 'recurring', 'frequency'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
