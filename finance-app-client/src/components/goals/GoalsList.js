@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoalForm from './GoalForm';
 import './GoalsList.css';
-import { Link } from 'react-router-dom';
 
 function GoalsList() {
   const [goals, setGoals] = useState([]);
@@ -52,9 +51,6 @@ function GoalsList() {
   return (
     <div className="goals-container">
       <h2>Goals</h2>
-      <div className="navigation">
-        <Link to="/dashboard">Back to Dashboard</Link>
-      </div>
       {error && <div className="error">{error}</div>}
       <ul className="goals-list">
         {goals.map(goal => (

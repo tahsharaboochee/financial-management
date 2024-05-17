@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TransactionForm from './TransactionForm';
 import './TransactionsList.css';
-import { Link } from 'react-router-dom';
 
 function TransactionsList() {
   const [transactions, setTransactions] = useState([]);
@@ -52,9 +51,6 @@ function TransactionsList() {
   return (
     <div className="transactions-container">
       <h2 className="section-title">Transactions</h2>
-      <div className="navigation">
-        <Link to="/dashboard">Back to Dashboard</Link>
-      </div>
       {error && <div className="error">{error}</div>}
       <ul className="transactions-list">
         {transactions.map(transaction => (

@@ -88,14 +88,6 @@ function Dashboard({ onLogout }) {
 
   return (
     <div className="dashboard">
-      <div className="header">
-        <h1>Dashboard</h1>
-        <div className="header-right">
-          <Link to="/transactions">Manage Transactions</Link>
-          <Link to="/goals">Manage Goals</Link>
-          <button onClick={handleLogout} className="logout">Logout</button>
-        </div>
-      </div>
       <div className="content">
         <section className="section">
           <h2>Transactions</h2>
