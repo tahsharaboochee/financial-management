@@ -3,6 +3,8 @@
 ## Overview
 The Finance Management System is designed to help users manage their personal finances, providing functionalities for transaction management, goal tracking, and financial insights. This project is built using Node.js with Express for the backend, React for the frontend, MongoDB for data storage, and JWT (JSON Web Tokens) for secure and scalable user authentication.
 
+## View Demo click below
+
 [![Demo](https://drive.google.com/thumbnail?id=16zCKlSSJXUijIDafIN4JrvR3FNn564mD)](https://drive.google.com/file/d/16zCKlSSJXUijIDafIN4JrvR3FNn564mD/view?usp=sharing)
 
 
