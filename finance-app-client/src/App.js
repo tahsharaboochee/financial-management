@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -10,8 +10,21 @@ import GoalsList from './components/goals/GoalsList';
 import './App.css';
 
 function App() {
-  const isAuthenticated = () => {
-    return localStorage.getItem('token') !== null;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
   };
 
   return (
@@ -19,12 +32,12 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />} />
-          <Route path="/transactions" element={isAuthenticated() ? <TransactionsList /> : <Navigate to="/login" />} />
-          <Route path="/goals" element={isAuthenticated() ? <GoalsList /> : <Navigate to="/login" />} />
-          <Route path="/about" element={<About />} /> 
+          <Route path="/dashboard" element={isAuthenticated ? <Dashboard onLogout={handleLogout} /> : <Navigate to="/" />} />
+          <Route path="/transactions" element={isAuthenticated ? <TransactionsList /> : <Navigate to="/" />} />
+          <Route path="/goals" element={isAuthenticated ? <GoalsList /> : <Navigate to="/" />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>

@@ -5,12 +5,11 @@ import api from '../api';
 import { Pie, Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 
-function Dashboard() {
+function Dashboard({ onLogout }) {
   const [transactions, setTransactions] = useState([]);
   const [goals, setGoals] = useState([]);
   const [spendingByCategory, setSpendingByCategory] = useState([]);
   const [incomeVsExpenses, setIncomeVsExpenses] = useState([]);
-  const [goalsProgress, setGoalsProgress] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -29,9 +28,6 @@ function Dashboard() {
         const incomeVsExpensesResponse = await api.get('/insights/income-vs-expenses');
         setIncomeVsExpenses(incomeVsExpensesResponse.data);
 
-        const goalsProgressResponse = await api.get('/insights/goals-progress');
-        setGoalsProgress(goalsProgressResponse.data);
-
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -43,8 +39,8 @@ function Dashboard() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+    onLogout();
+    navigate('/login');
   };
 
   if (loading) {

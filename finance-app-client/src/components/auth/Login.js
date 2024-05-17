@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
-function Login() {
+function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,33 +11,13 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
-
     try {
-      const response = await axios.post('http://localhost:3000/users/login', {
-        email,
-        password
-      });
-
-      if (response.status === 200) {
-        console.log('Login Successful:', response.data);
-        localStorage.setItem('token', response.data.token);
-        console.log('Token set in localStorage:', localStorage.getItem('token'));
-        navigate('/dashboard');  // Navigate to the dashboard upon successful login
-        console.log('Navigating to dashboard');
-      } else {
-        setError('Unexpected response status: ' + response.status);
-      }
+      const response = await axios.post('http://localhost:3000/users/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      onLogin(); // Update the authentication state
+      navigate('/dashboard'); // Navigate to the dashboard after login
     } catch (err) {
-      console.error('Error:', err);
-      if (err.response) {
-        setError(err.response.data.error || 'Unknown error occurred.');
-      } else if (err.request) {
-        console.error('Error request:', err.request);
-        setError('No response received from the server.');
-      } else {
-        setError('Login failed. Please try again later.');
-      }
+      setError('Login failed. Please try again.');
     }
   };
 
@@ -45,26 +25,26 @@ function Login() {
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
+        <label>
+          Email:
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Password</label>
+        </label>
+        <label>
+          Password:
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
+        </label>
         {error && <div className="error">{error}</div>}
-        <button type="submit">Log In</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
