@@ -93,7 +93,7 @@ function Dashboard({ onLogout }) {
             ))}
           </ul>
         </section>
-        <div className="goals-container">
+        <div className="goals-container-dashboard">
           <section className="section">
             <h2>Financial Goals</h2>
             <ul>
