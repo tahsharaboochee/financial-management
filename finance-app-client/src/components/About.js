@@ -4,19 +4,6 @@ import photo from '../images/about.png'
 function About() {
   return (
     <div className="about-container">
-      <header className="header">
-        <div className="header-content">
-          <div className="logo">My Finance App</div>
-          <nav className="nav">
-            <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/login">Login</a></li>
-              <li><a href="/register">Register</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
       <main className="main-content">
         <div className="about-section">
           <h1>About Us</h1>

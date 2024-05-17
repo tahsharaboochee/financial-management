@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import api from '../api';
 import { Pie, Bar } from 'react-chartjs-2';
@@ -11,7 +11,6 @@ function Dashboard({ onLogout }) {
   const [spendingByCategory, setSpendingByCategory] = useState([]);
   const [incomeVsExpenses, setIncomeVsExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,11 +36,6 @@ function Dashboard({ onLogout }) {
 
     fetchData();
   }, []);
-
-  const handleLogout = () => {
-    onLogout();
-    navigate('/');
-  };
 
   if (loading) {
     return <div>Loading...</div>;

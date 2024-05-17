@@ -50,11 +50,11 @@ function GoalsList() {
 
   return (
     <div className="goals-container">
-      <h2>Goals</h2>
+      <h2 className="section-title">Goals</h2>
       {error && <div className="error">{error}</div>}
       <ul className="goals-list">
         {goals.map(goal => (
-          <li key={goal._id}>
+          <li key={goal._id} className="goal-item">
             {goal.description} - Target: ${goal.targetAmount} - Current: ${goal.currentAmount} - Deadline: {goal.deadline}
             <button className="edit" onClick={() => handleEdit(goal._id)}>Edit</button>
             <button onClick={() => handleDelete(goal._id)}>Delete</button>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './GoalForm.css';
 
-function GoalForm({ goalId, setGoals, isEditing, setIsEditing, setCurrentGoalId }) {
+function GoalForm({ goalId, setGoals, isEditing, setIsEditing }) {
   const [formData, setFormData] = useState({
     description: '',
     targetAmount: '',
@@ -21,8 +21,7 @@ function GoalForm({ goalId, setGoals, isEditing, setIsEditing, setCurrentGoalId 
           const response = await axios.get(`http://localhost:3000/goals/${goalId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
           });
-          const { description, targetAmount, currentAmount, deadline } = response.data;
-          setFormData({ description, targetAmount, currentAmount, deadline: deadline.split('T')[0] }); // format date
+          setFormData({ ...response.data });
         } catch (err) {
           setError('Failed to fetch goal data');
         }
@@ -44,17 +43,12 @@ function GoalForm({ goalId, setGoals, isEditing, setIsEditing, setCurrentGoalId 
       };
       const method = isEditing ? 'patch' : 'post';
       const url = isEditing ? `http://localhost:3000/goals/${goalId}` : 'http://localhost:3000/goals';
-
-      // Only include allowed fields in the payload
-      const payload = { description, targetAmount, currentAmount, deadline };
-
-      const response = await axios[method](url, payload, config);
+      const response = await axios[method](url, formData, config);
 
       if (isEditing) {
         // Update the UI optimistically
-        setGoals(prev => prev.map(goal => goal._id === goalId ? { ...goal, ...payload } : goal));
+        setGoals(prev => prev.map(goal => goal._id === goalId ? { ...goal, ...formData } : goal));
         setIsEditing(false);
-        setCurrentGoalId(null);
       } else {
         // Append to the list of goals
         setGoals(prev => [...prev, response.data]);
