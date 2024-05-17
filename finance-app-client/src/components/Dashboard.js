@@ -40,7 +40,7 @@ function Dashboard({ onLogout }) {
 
   const handleLogout = () => {
     onLogout();
-    navigate('/login');
+    navigate('/');
   };
 
   if (loading) {

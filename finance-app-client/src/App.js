@@ -34,9 +34,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={isAuthenticated ? <Dashboard onLogout={handleLogout} /> : <Navigate to="/" />} />
-          <Route path="/transactions" element={isAuthenticated ? <TransactionsList /> : <Navigate to="/" />} />
-          <Route path="/goals" element={isAuthenticated ? <GoalsList /> : <Navigate to="/" />} />
+          <Route path="/dashboard" element={isAuthenticated ? <Dashboard onLogout={handleLogout} /> : <Navigate to="/login" />} />
+          <Route path="/transactions" element={isAuthenticated ? <TransactionsList /> : <Navigate to="/login" />} />
+          <Route path="/goals" element={isAuthenticated ? <GoalsList /> : <Navigate to="/login" />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
